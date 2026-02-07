@@ -1,12 +1,10 @@
 package br.com.reactive.application;
 
-import br.com.reactive.domain.evento.Evento;
 import br.com.reactive.domain.evento.EventoDto;
+import br.com.reactive.domain.evento.TipoEvento;
 import br.com.reactive.infra.exeptions.NotFoundException;
 import br.com.reactive.repositories.EventoRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +20,8 @@ public class EventoService {
         return eventoRepository.findAll()
                 .map(EventoDto::toDto);
     }
+
+
 
     public Mono<EventoDto> findById(Long id) {
         return eventoRepository.findById(id)
@@ -47,5 +47,11 @@ public class EventoService {
 
     public Mono<Void> delete(Long id) {
         return eventoRepository.deleteById(id);
+    }
+
+    public Flux<EventoDto> findByType(String tipo) {
+        TipoEvento  tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
+
+        return eventoRepository.findByTipo(tipoEvento).map(EventoDto::toDto);
     }
 }
