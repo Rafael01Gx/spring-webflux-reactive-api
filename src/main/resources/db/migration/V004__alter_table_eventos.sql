@@ -1,0 +1,1 @@
+ALTER TABLE eventos ADD COLUMN qnt_ingressos INT DEFAULT 10;

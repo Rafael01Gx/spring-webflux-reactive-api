@@ -22,4 +22,9 @@ public class GlobalExeptionHandler {
         var erros = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(erros.stream().map(ErroValidacao::new).toList());
     }
+
+    @ExceptionHandler(TicketUnavailable.class)
+    public ResponseEntity<String> handleTicketUnavailable(TicketUnavailable e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }

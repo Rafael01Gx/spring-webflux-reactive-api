@@ -1,6 +1,7 @@
 package br.com.reactive.domain.evento;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class Evento {
     private TipoEvento tipo;
     private String nome;
     private LocalDate data;
+    private Integer qntIngressos;
     private String descricao;
 
     public Long getId() {
@@ -55,6 +57,14 @@ public class Evento {
         this.descricao = descricao;
     }
 
+    public Integer getQntIngressos() {
+        return qntIngressos;
+    }
+
+    public void setQntIngressos(Integer qntIngressos) {
+        this.qntIngressos = qntIngressos;
+    }
+
 
     public static class Builder{
         private Evento evento;
@@ -82,6 +92,12 @@ public class Evento {
             evento.setTipo(tipo);
             return this;
         }
+
+        public Builder qntIngressos(Integer qntIngressos){
+            evento.setQntIngressos(qntIngressos);
+            return this;
+        }
+
         public Builder descricao(String descricao){
             evento.setDescricao(descricao);
             return this;

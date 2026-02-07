@@ -1,5 +1,6 @@
 package br.com.reactive.application;
 
+import br.com.reactive.domain.evento.Evento;
 import br.com.reactive.domain.evento.EventoDto;
 import br.com.reactive.domain.evento.TipoEvento;
 import br.com.reactive.infra.exeptions.NotFoundException;
@@ -30,7 +31,6 @@ public class EventoService {
     }
 
     public Mono<EventoDto> create(EventoDto dto) {
-        IO.println(dto.toString());
         return eventoRepository.save(dto.toEntity()).map(EventoDto::toDto);
     }
 
@@ -53,5 +53,11 @@ public class EventoService {
         TipoEvento  tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
 
         return eventoRepository.findByTipo(tipoEvento).map(EventoDto::toDto);
+    }
+
+    public Mono<Integer> qnTicketsAvailable(Long id) {
+        return eventoRepository.findById(id).switchIfEmpty(Mono.error(new NotFoundException("Evento não encontrado"))).map(
+                Evento::getQntIngressos
+        );
     }
 }

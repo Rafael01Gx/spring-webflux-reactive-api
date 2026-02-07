@@ -7,11 +7,12 @@ public record EventoDto(
         TipoEvento tipo,
         String nome,
         LocalDate data,
+        Integer qntIngressos,
         String descricao
 ) {
 
     public static EventoDto toDto(Evento evento){
-      return new EventoDto(evento.getId(),evento.getTipo(),evento.getNome(),evento.getData(),evento.getDescricao());
+      return new EventoDto(evento.getId(),evento.getTipo(),evento.getNome(),evento.getData(), evento.getQntIngressos(), evento.getDescricao());
     }
 
     public Evento toEntity(){
@@ -20,6 +21,7 @@ public record EventoDto(
                 .tipo(this.tipo())
                 .nome(this.nome())
                 .data(this.data())
+                .qntIngressos(this.qntIngressos())
                 .descricao(this.descricao())
                 .build();
     }
