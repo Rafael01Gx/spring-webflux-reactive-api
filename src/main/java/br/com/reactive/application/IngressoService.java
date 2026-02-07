@@ -7,11 +7,7 @@ import br.com.reactive.infra.exeptions.TicketUnavailable;
 import br.com.reactive.repositories.EventoRepository;
 import br.com.reactive.repositories.IngressoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class IngressoService {

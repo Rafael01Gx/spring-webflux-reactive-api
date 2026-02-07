@@ -1,8 +1,5 @@
 package br.com.reactive.domain.ingresso;
 
-import br.com.reactive.domain.evento.Evento;
-
-
 public record IngressoDto(
         Long id,
         String codigo,

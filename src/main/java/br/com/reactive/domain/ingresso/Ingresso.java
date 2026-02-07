@@ -1,6 +1,5 @@
 package br.com.reactive.domain.ingresso;
 
-import br.com.reactive.domain.evento.Evento;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
