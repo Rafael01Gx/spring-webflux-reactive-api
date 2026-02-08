@@ -4,6 +4,7 @@ import br.com.reactive.application.EventoService;
 import br.com.reactive.application.EventoSinkService;
 import br.com.reactive.domain.evento.EventoDto;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class EventoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<EventoDto> save(@RequestBody @Validated EventoDto dto) {
 
         return service.create(dto)
