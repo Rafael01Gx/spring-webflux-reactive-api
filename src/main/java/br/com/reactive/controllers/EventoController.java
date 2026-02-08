@@ -2,7 +2,9 @@ package br.com.reactive.controllers;
 
 import br.com.reactive.application.EventoService;
 import br.com.reactive.application.EventoSinkService;
+import br.com.reactive.application.TranslationService;
 import br.com.reactive.domain.evento.EventoDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,13 @@ public class EventoController {
 
     private final EventoService service;
     private final EventoSinkService eventoSinkService;
+    private final TranslationService translationService;
 
 
-    EventoController(EventoService service, EventoSinkService eventoSinkService) {
+    EventoController(EventoService service, EventoSinkService eventoSinkService, TranslationService translationService) {
         this.service = service;
         this.eventoSinkService =  eventoSinkService;
+        this.translationService = translationService;
 
     }
 
@@ -65,5 +69,11 @@ public class EventoController {
     public Mono<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
+
+    @PostMapping("traduzir")
+    public Mono<String> translate(@RequestBody String text, @RequestHeader HttpHeaders header) {
+        return translationService.translate(header.getAcceptLanguage().getFirst().toString(), text);
+    }
+
 
 }

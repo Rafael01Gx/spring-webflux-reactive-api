@@ -13,5 +13,5 @@ spring:
     password: postgres
 
 deepl:
-  apiBaseUrl: https://api.deepl.com
-  apiKey: xxxxxxxxxxxxxxxxx
+  apiBaseUrl: https://api-free.deepl.com
+  apiKey: ef0c5916-93ca-4566-b178-218be5ad0882:fx

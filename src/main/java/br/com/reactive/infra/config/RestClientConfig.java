@@ -16,19 +16,28 @@ public class RestClientConfig {
 
 
     @Bean
-    WebClient deeplWebClient(DeeplProperties properties) {
-        return WebClient.builder()
+    public WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
+    }
+
+    @Bean
+    public WebClient deeplWebClient(WebClient.Builder builder,DeeplProperties properties) {
+        return builder
                 .baseUrl(properties.apiBaseUrl())
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.AUTHORIZATION,"DeepL-Auth-Key " + properties.apiKey())
                 .build();
     }
 
     @Bean
-    DeeplClient deeplClient(WebClient deeplWebClient) {
-        var adapter = WebClientAdapter.create(deeplWebClient);
+    public WebClientAdapter deeplWebClientAdapter(WebClient deeplWebClient) {
+        return WebClientAdapter.create(deeplWebClient);
+    }
 
+    @Bean
+    public DeeplClient deeplClient(WebClientAdapter deeplWebClientAdapter) {
         return HttpServiceProxyFactory
-                .builderFor(adapter)
+                .builderFor(deeplWebClientAdapter)
                 .build()
                 .createClient(DeeplClient.class);
     }
