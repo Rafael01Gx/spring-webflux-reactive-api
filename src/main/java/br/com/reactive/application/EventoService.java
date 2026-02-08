@@ -13,15 +13,17 @@ import reactor.core.publisher.Mono;
 public class EventoService {
 
     private final EventoRepository eventoRepository;
-    public EventoService(EventoRepository eventoRepository) {
+    private final TranslationService translationService;
+
+    public EventoService(EventoRepository eventoRepository, TranslationService translationService) {
         this.eventoRepository = eventoRepository;
+        this.translationService = translationService;
     }
 
     public Flux<EventoDto> findAll() {
         return eventoRepository.findAll()
                 .map(EventoDto::toDto);
     }
-
 
 
     public Mono<EventoDto> findById(Long id) {
@@ -35,7 +37,7 @@ public class EventoService {
     }
 
     public Mono<EventoDto> update(Long id, EventoDto dto) {
-        return eventoRepository.findById(id).switchIfEmpty(Mono.error(new NotFoundException("Evento náo encontrado!"))).flatMap(e->{
+        return eventoRepository.findById(id).switchIfEmpty(Mono.error(new NotFoundException("Evento náo encontrado!"))).flatMap(e -> {
             e.setTipo(dto.tipo());
             e.setNome(dto.nome());
             e.setData(dto.data());
@@ -50,7 +52,7 @@ public class EventoService {
     }
 
     public Flux<EventoDto> findByType(String tipo) {
-        TipoEvento  tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
+        TipoEvento tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
 
         return eventoRepository.findByTipo(tipoEvento).map(EventoDto::toDto);
     }
@@ -60,4 +62,16 @@ public class EventoService {
                 Evento::getQntIngressos
         );
     }
+
+    public Mono<EventoDto> translate(Long id, String local) {
+        return eventoRepository.findById(id)
+                .flatMap(e ->
+                        translationService.translate(local, e.getDescricao())
+                                .map(traducao -> {
+                                    e.setDescricao(traducao);
+                                    return EventoDto.toDto(e);
+                                })
+                );
+    }
+
 }
